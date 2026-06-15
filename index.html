@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olesia Ivashchuk | Embedded Engineer</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #09090f;
+    color: #f8fafc;
+    overflow-x: hidden;
+}
+
+/* Animated grid background */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(139,92,246,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139,92,246,0.25), transparent 35%),
+        radial-gradient(circle at 80% 30%, rgba(124,58,237,0.2), transparent 30%);
+    z-index: -1;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: auto;
+}
+
+/* NAVBAR */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(16px);
+    background: rgba(9,9,15,0.75);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #a78bfa;
+}
+
+.nav-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    margin-left: 24px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #a78bfa;
+}
+
+/* HERO */
+.hero {
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+}
+
+.terminal {
+    color: #a78bfa;
+    font-family: monospace;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    margin-bottom: 18px;
+}
+
+.hero h1 span {
+    color: #a78bfa;
+}
+
+.hero h2 {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: #94a3b8;
+    margin-bottom: 24px;
+}
+
+.hero p {
+    max-width: 760px;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+
+.hero-buttons {
+    margin-top: 40px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 14px 22px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.primary {
+    background: #8b5cf6;
+    color: white;
+}
+
+.primary:hover {
+    box-shadow: 0 0 25px rgba(139,92,246,0.5);
+}
+
+.secondary {
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+}
+
+.secondary:hover {
+    border-color: #8b5cf6;
+}
+
+/* SECTIONS */
+section {
+    padding: 100px 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #a78bfa;
+}
+
+/* METRICS */
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.metric-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 30px;
+    transition: 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(139,92,246,0.5);
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #a78bfa;
+}
+
+.metric-label {
+    margin-top: 8px;
+    color: #94a3b8;
+}
+
+@media(max-width:900px){
+    .metrics{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:600px){
+    .metrics{
+        grid-template-columns:1fr;
+    }
+
+    .nav-links{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="container">
+        <div class="logo">OI.dev</div>
+
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <div class="terminal">$ whoami</div>
+
+        <h1>Olesia <span>Ivashchuk</span></h1>
+
+        <h2>Embedded Engineer (in progress)</h2>
+
+        <p>
+            I build systems where software meets physical hardware —
+            from microcontroller benchmarking to real-time sensing,
+            firmware engineering, latency analysis, and low-level performance optimization.
+        </p>
+
+        <div class="hero-buttons">
+            <a class="btn primary" href="mailto:oivashch1@walsh.edu">Contact Me</a>
+            <a class="btn secondary" href="https://github.com/olesyaivashchuk24" target="_blank">GitHub</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <h2 class="section-title">Live Metrics</h2>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-value">3.6</div>
+                <div class="metric-label">GPA</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value">2027</div>
+                <div class="metric-label">Graduation</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value">3+</div>
+                <div class="metric-label">Major Projects</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-value">ESP32</div>
+                <div class="metric-label">Platform</div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="about">
+    <div class="container">
+        <h2 class="section-title">About</h2>
+        <p style="max-width:850px; font-size:1.1rem; line-height:1.9; color:#cbd5e1;">
+            My path into embedded systems has been largely self-driven. Since
+            Walsh University offers limited specialized coursework in embedded engineering,
+            I built my experience independently through research-oriented projects involving
+            firmware development, microcontrollers, performance benchmarking, and low-level systems analysis.
+            <br><br>
+            I enjoy embedded engineering because it sits at the boundary between software
+            and physical reality — every timing constraint, memory limitation, and microsecond matters.
+        </p>
+    </div>
+</section>
+
+<section id="projects">
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+
+        <div class="metric-card" style="margin-bottom:25px;">
+            <h3 style="font-size:1.6rem; margin-bottom:16px;">Embedded Framework Benchmarking</h3>
+            <p style="color:#cbd5e1; line-height:1.8;">
+                Conducted comparative research on C, MicroPython, and TinyGo performance
+                on ESP32-S3 microcontrollers. Designed benchmark suites evaluating GPIO latency,
+                sensor interfacing, mathematical computations, networking, and power consumption.
+            </p>
+        </div>
+
+        <div class="metric-card" style="margin-bottom:25px;">
+            <h3 style="font-size:1.6rem; margin-bottom:16px;">Real-Time Environmental Monitoring System</h3>
+            <p style="color:#cbd5e1; line-height:1.8;">
+                Building a real-time sensing platform using Raspberry Pi Pico 2W with serial telemetry,
+                timing analysis, sensor acquisition, and MATLAB signal processing for latency and jitter evaluation.
+            </p>
+        </div>
+
+        <div class="metric-card">
+            <h3 style="font-size:1.6rem; margin-bottom:16px;">Robotics Education & Mentorship</h3>
+            <p style="color:#cbd5e1; line-height:1.8;">
+                Guided student robotics projects using Arduino, MicroPython, and embedded hardware.
+                Taught programming fundamentals and hardware-software integration through hands-on learning.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="container">
+        <h2 class="section-title">Skills</h2>
+
+        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+            <span class="btn secondary">C</span>
+            <span class="btn secondary">C++</span>
+            <span class="btn secondary">Python</span>
+            <span class="btn secondary">MicroPython</span>
+            <span class="btn secondary">TinyGo</span>
+            <span class="btn secondary">ESP32</span>
+            <span class="btn secondary">Raspberry Pi Pico</span>
+            <span class="btn secondary">MATLAB</span>
+            <span class="btn secondary">Git</span>
+            <span class="btn secondary">Arduino</span>
+            <span class="btn secondary">Blender</span>
+            <span class="btn secondary">MySQL</span>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <h2 class="section-title">Contact</h2>
+
+        <p style="font-size:1.15rem; color:#cbd5e1; line-height:2;">
+            Email: oivashch1@walsh.edu <br>
+            GitHub: <a href="https://github.com/olesyaivashchuk24" target="_blank" style="color:#a78bfa;">github.com/olesyaivashchuk24</a><br>
+            Location: North Canton, Ohio
+        </p>
+    </div>
+</section>
+
+<footer style="padding:50px 0; text-align:center; color:#64748b; border-top:1px solid rgba(255,255,255,0.08);">
+    © 2026 Olesia Ivashchuk · OI.dev
+</footer>
+
+</body>
+</html>
