@@ -10,41 +10,40 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a12;
-  --bg2:#0f0f1a;
-  --bg3:#141428;
-  --surface:#1a1a2e;
-  --surface2:#1e1e35;
+  --bg:#070710;
+  --bg2:#0b0b18;
+  --surface:#121224;
+  --surface2:#181830;
   --purple:#c084fc;
   --purple-bright:#a855f7;
-  --purple-dim:rgba(192,132,252,0.1);
-  --purple-border:rgba(192,132,252,0.2);
+  --purple-dim:rgba(192,132,252,0.08);
+  --purple-border:rgba(192,132,252,0.18);
   --green:#34d399;
-  --green-dim:rgba(52,211,153,0.08);
-  --green-border:rgba(52,211,153,0.18);
+  --green-dim:rgba(52,211,153,0.07);
+  --green-border:rgba(52,211,153,0.16);
   --blue:#60a5fa;
-  --text:#f1f5f9;
-  --text2:#cbd5e1;
-  --muted:#64748b;
-  --border:rgba(255,255,255,0.06);
-  --border2:rgba(255,255,255,0.1);
+  --amber:#fbbf24;
+  --text:#eef2f8;
+  --text2:#b8c4d8;
+  --muted:#6478a0;
+  --border:rgba(255,255,255,0.05);
+  --border2:rgba(255,255,255,0.09);
   --mono:'JetBrains Mono',monospace;
   --sans:'Inter',sans-serif;
   --r:12px;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;font-size:15px;line-height:1.6}
 
-/* GRID BG */
-body::before{
-  content:"";position:fixed;inset:0;z-index:-2;
-  background-image:linear-gradient(rgba(168,85,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.04) 1px,transparent 1px);
-  background-size:60px 60px;
-}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;font-size:15px;line-height:1.65}
+
+/* CANVAS BG */
+#bg-canvas{position:fixed;inset:0;z-index:-3;pointer-events:none}
+
 body::after{
   content:"";position:fixed;inset:0;z-index:-1;
-  background:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(168,85,247,0.12),transparent),
-             radial-gradient(ellipse 60% 40% at 90% 80%,rgba(52,211,153,0.06),transparent);
+  background:radial-gradient(ellipse 70% 50% at 8% 0%,rgba(168,85,247,0.10),transparent),
+             radial-gradient(ellipse 50% 40% at 88% 85%,rgba(52,211,153,0.06),transparent),
+             radial-gradient(ellipse 40% 30% at 50% 50%,rgba(96,165,250,0.03),transparent);
 }
 
 a{color:var(--purple);text-decoration:none}
@@ -53,440 +52,557 @@ a:hover{color:var(--purple-bright)}
 /* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
-  background:rgba(10,10,18,0.7);backdrop-filter:blur(20px);
+  background:rgba(7,7,16,0.75);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
 }
-.nav-inner{max-width:1140px;margin:0 auto;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--purple);letter-spacing:.02em}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--purple);letter-spacing:.02em}
 .logo span{color:var(--green)}
-.nav-links a{font-size:15px;color:var(--muted);margin-left:2rem;transition:.2s;font-weight:400}
+.nav-links{display:flex;align-items:center;gap:0}
+.nav-links a{font-size:13px;color:var(--muted);padding:0 1rem;transition:.2s}
 .nav-links a:hover{color:var(--text)}
-.nav-badge{font-family:var(--mono);font-size:13px;background:var(--green-dim);color:var(--green);border:3px solid var(--green-border);padding:3px 10px;border-radius:10px;margin-left:2rem}
+.nav-badge{font-family:var(--mono);font-size:12px;background:var(--green-dim);color:var(--green);border:1px solid var(--green-border);padding:4px 12px;border-radius:20px;margin-left:1.5rem;display:flex;align-items:center;gap:6px}
 
-/* WRAPPER */
-.wrap{max-width:1140px;margin:0 auto;padding:0 2rem}
+/* LAYOUT */
+.outer{max-width:1200px;margin:0 auto;padding:0 2rem}
+section{padding:80px 0}
 
-/* SECTIONS */
-section{padding:100px 0}
-
+/* SECTION LABEL */
 .sec-label{
   font-family:var(--mono);font-size:10px;color:var(--purple);
   letter-spacing:.18em;text-transform:uppercase;
-  display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;
+  display:flex;align-items:center;gap:1rem;margin-bottom:2rem;
 }
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--purple-border),transparent)}
+
+/* TWO-COL LAYOUT */
+.two-col{display:grid;grid-template-columns:340px 1fr;gap:3rem;align-items:start}
+.sidebar{position:sticky;top:72px}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;padding-top:60px}
-.hero-inner{max-width:860px}
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:56px}
 
 .hero-eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--mono);font-size:14px;color:var(--green);
-  background:var(--green-dim);border:2px solid var(--green-border);
-  padding:6px 14px;border-radius:22px;margin-bottom:2rem;
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:13px;color:var(--green);
+  background:var(--green-dim);border:1px solid var(--green-border);
+  padding:5px 14px;border-radius:20px;margin-bottom:1.8rem;
 }
-.hero-eyebrow .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 
 .hero h1{
   font-family:var(--mono);font-weight:700;
-  font-size:clamp(2.8rem,7vw,5.2rem);line-height:1.05;
-  letter-spacing:-.03em;margin-bottom:1rem;
+  font-size:clamp(2.6rem,6vw,4.4rem);line-height:1.05;
+  letter-spacing:-.03em;margin-bottom:.8rem;
 }
 .hero h1 .name{color:var(--purple)}
 .hero h1 .cur::after{content:'_';color:var(--green);animation:blink 1s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
 .hero-role{
-  font-size:1.1rem;color:var(--muted);margin-bottom:1.5rem;font-weight:300;
+  font-size:15px;color:var(--muted);margin-bottom:1.2rem;
   font-family:var(--mono);letter-spacing:.02em;
 }
 .hero-role em{color:var(--text2);font-style:normal}
 
-.hero-desc{font-size:16px;color:var(--text2);line-height:1.85;max-width:620px;margin-bottom:2.5rem;font-weight:300}
+.hero-desc{font-size:15px;color:var(--text2);line-height:1.8;max-width:580px;margin-bottom:2rem;font-weight:300}
 
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:3rem}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:2.4rem}
 
 .btn{
-  font-family:var(--mono);font-size:12px;letter-spacing:.05em;
-  padding:11px 22px;border-radius:8px;border:1px solid transparent;
-  transition:all .25s;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+  padding:9px 20px;border-radius:8px;border:1px solid transparent;
+  transition:all .22s;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
 }
 .btn-p{background:var(--purple-bright);color:#fff;border-color:var(--purple-bright)}
-.btn-p:hover{box-shadow:0 0 28px rgba(168,85,247,.5);color:#fff}
-.btn-o{border-color:var(--border2);color:var(--text2);background:transparent}
+.btn-p:hover{background:#9333ea;color:#fff}
+.btn-o{border-color:var(--border2);color:var(--text2)}
 .btn-o:hover{border-color:var(--purple);color:var(--purple)}
 .btn-g{border-color:var(--green-border);color:var(--green);background:var(--green-dim)}
-.btn-g:hover{background:rgba(52,211,153,.15);color:var(--green)}
+.btn-g:hover{background:rgba(52,211,153,.14)}
 
-/* HERO STATS ROW */
-.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--border)}
-.hstat{display:flex;flex-direction:column;gap:2px}
-.hstat-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--purple)}
+/* STAT ROW */
+.hero-stats{display:flex;gap:1.8rem;flex-wrap:wrap;padding-top:1.8rem;border-top:1px solid var(--border)}
+.hstat-val{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--purple);display:block}
 .hstat-val.g{color:var(--green)}
-.hstat-lbl{font-size:11px;color:var(--muted);letter-spacing:.04em}
+.hstat-lbl{font-size:11px;color:var(--muted);letter-spacing:.04em;display:block}
 
-/* BENTO */
-.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+/* BENTO CARDS */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
 .c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}
 .c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}
 .c9{grid-column:span 9}.c12{grid-column:span 12}
 
 .card{
-  background:var(--surface);border:3px solid var(--border);
-  border-radius:var(--r);padding:1.4rem;transition:border-color .25s;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.25rem;transition:border-color .22s;
 }
 .card:hover{border-color:var(--border2)}
 .card.hl:hover{border-color:var(--purple-border)}
 .card.gl:hover{border-color:var(--green-border)}
 
-.ctag{
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-  text-transform:uppercase;margin-bottom:.5rem;color:var(--purple);opacity:.7;
-}
+.ctag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;color:var(--purple);opacity:.65}
 .ctag.g{color:var(--green)}
-.card h3{font-size:14px;font-weight:600;margin-bottom:.35rem;color:var(--text)}
-.card p,.cp{font-size:13px;color:var(--muted);line-height:1.7}
+.card h3{font-size:14px;font-weight:600;margin-bottom:.3rem;color:var(--text)}
+.card p{font-size:13px;color:var(--muted);line-height:1.75}
 
-/* EXPERIENCE TIMELINE */
-.exp-item{
-  display:grid;grid-template-columns:140px 1fr;gap:0 2rem;
-  padding:1.5rem 0;border-bottom:2px solid var(--border);
-  position:relative;
-}
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:.8rem}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:3px 9px;border-radius:4px;background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-border)}
+.tg{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.tb{background:rgba(96,165,250,.07);color:var(--blue);border-color:rgba(96,165,250,.16)}
+
+/* EXPERIENCE */
+.exp-item{padding:1.2rem 0;border-bottom:1px solid var(--border)}
 .exp-item:last-child{border-bottom:none;padding-bottom:0}
-.exp-date{font-family:var(--mono);font-size:11px;color:var(--muted);padding-top:3px;line-height:1.5}
-.exp-role{font-size:15px;font-weight:600;margin-bottom:3px;color:var(--text)}
-.exp-org{font-family:var(--mono);font-size:12px;color:var(--purple);margin-bottom:.6rem}
+.exp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.4rem}
+.exp-role{font-size:14px;font-weight:600;color:var(--text)}
+.exp-date{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;margin-top:2px}
+.exp-org{font-family:var(--mono);font-size:12px;color:var(--purple);margin-bottom:.5rem}
 .exp-desc{font-size:13px;color:var(--muted);line-height:1.7}
-.exp-dot{
-  position:absolute;left:131px;top:1.8rem;
-  width:7px;height:7px;background:var(--purple);border-radius:50%;
-  box-shadow:0 0 8px var(--purple-bright);
-}
 
 /* PROJECTS */
 .proj{
-  grid-column:span 6;background:var(--surface);
-  border:1px solid var(--border);border-radius:var(--r);
-  padding:1.6rem;transition:all .25s;display:flex;flex-direction:column;gap:.8rem;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.4rem;transition:all .22s;
 }
 .proj:hover{border-color:var(--purple-border);transform:translateY(-2px)}
-.proj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.proj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.6rem}
 .proj-head h3{font-size:15px;font-weight:600;line-height:1.3}
-.proj-link{font-family:var(--mono);font-size:10px;color:var(--green);white-space:nowrap;flex-shrink:0}
-.proj-link:hover{color:var(--green)}
-.proj-desc{font-size:13px;color:var(--muted);line-height:1.7;flex:1}
-
-/* TAGS */
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{
-  font-family:var(--mono);font-size:9px;letter-spacing:.05em;
-  padding:3px 9px;border-radius:4px;
-  background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-border);
-}
-.tg{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
-.tb{background:rgba(96,165,250,.07);color:var(--blue);border-color:rgba(96,165,250,.18)}
+.proj-link{font-family:var(--mono);font-size:10px;color:var(--green);white-space:nowrap}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.75}
 
 /* SKILLS */
-.sg{grid-column:span 4;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem}
-.sg-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
-.sg-list{display:flex;flex-wrap:wrap;gap:7px}
+.sg{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem}
+.sg-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.sg-list{display:flex;flex-wrap:wrap;gap:6px}
 
 /* NOW */
-.now-row{display:flex;align-items:flex-start;gap:10px;padding:.85rem 0;border-bottom:1px solid var(--border)}
+.now-row{display:flex;align-items:flex-start;gap:10px;padding:.75rem 0;border-bottom:1px solid var(--border)}
 .now-row:last-child{border-bottom:none}
 .now-arr{font-family:var(--mono);font-size:13px;color:var(--green);flex-shrink:0;margin-top:1px}
 .now-txt{font-size:13px;color:var(--muted)}
 .now-txt strong{color:var(--text);font-weight:500}
 
 /* CONTACT */
+.clinks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .clink{
-  grid-column:span 6;background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r);padding:1.2rem 1.5rem;
-  display:flex;align-items:center;gap:1rem;transition:border-color .25s;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.1rem 1.3rem;
+  display:flex;align-items:center;gap:.9rem;transition:border-color .22s;
 }
 .clink:hover{border-color:var(--purple-border)}
-.clink-ico{width:38px;height:38px;border-radius:8px;background:var(--purple-dim);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.clbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.clink-ico{width:36px;height:36px;border-radius:8px;background:var(--purple-dim);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.clbl{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .cval{font-size:13px;color:var(--text)}
 
-/* FOOTER */
-footer{padding:2rem 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+/* ANIM */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.dot{width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse 2s infinite}
 
-/* DIVIDER */
-.div-line{height:1px;background:linear-gradient(90deg,transparent,var(--purple-border),transparent);margin:0 0 0}
+/* FOOTER */
+footer{padding:1.8rem 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+
+/* MAIN PAGE LAYOUT: sidebar + content */
+.page-shell{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:100vh}
+.page-sidebar{
+  position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
+  border-right:1px solid var(--border);
+  background:rgba(7,7,16,0.5);backdrop-filter:blur(8px);
+  padding:2rem 1.5rem;display:flex;flex-direction:column;gap:1.5rem;
+}
+.page-content{padding:2.5rem 2.5rem;overflow:hidden}
+
+/* SIDEBAR PROFILE */
+.prof-top{text-align:center;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.prof-avatar{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 1rem;
+  background:linear-gradient(135deg,var(--purple-bright),#6366f1);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:1.6rem;font-weight:700;color:#fff;
+  border:2px solid var(--purple-border);
+}
+.prof-name{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text);margin-bottom:.2rem}
+.prof-title{font-size:12px;color:var(--muted);line-height:1.5}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-border);padding:4px 12px;border-radius:20px;margin-top:.8rem}
+
+.sidebar-section{padding-bottom:1.2rem;border-bottom:1px solid var(--border)}
+.sidebar-section:last-child{border-bottom:none}
+.sidebar-head{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:.8rem;opacity:.7}
+.info-row{display:flex;align-items:flex-start;gap:.6rem;padding:.35rem 0;font-size:13px}
+.info-row .lbl{color:var(--muted);min-width:60px;font-size:12px}
+.info-row .val{color:var(--text2)}
+
+.sidebar-links{display:flex;flex-direction:column;gap:6px}
+.s-link{
+  display:flex;align-items:center;gap:8px;padding:.5rem .75rem;border-radius:8px;
+  border:1px solid var(--border);font-size:13px;color:var(--text2);transition:all .2s;
+}
+.s-link:hover{border-color:var(--purple-border);color:var(--purple)}
+.s-link-ico{font-size:14px;opacity:.7}
+
+.mcu-list{display:flex;flex-wrap:wrap;gap:6px}
 
 /* RESPONSIVE */
-@media(max-width:900px){
-  .c3,.c4,.c5,.c6,.c7,.c8,.c9{grid-column:span 12}
-  .proj,.sg,.clink{grid-column:span 12}
-  .exp-item{grid-template-columns:1fr}
-  .exp-dot{display:none}
-  .exp-date{padding-bottom:.3rem}
-  .nav-links,.nav-badge{display:none}
-  section{padding:70px 0}
+@media(max-width:1000px){
+  .page-shell{grid-template-columns:1fr}
+  .page-sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .bento .c3,.bento .c4,.bento .c5,.bento .c6,.bento .c7,.bento .c8{grid-column:span 12}
+  .clinks{grid-template-columns:1fr}
 }
-@media(max-width:600px){
-  .wrap{padding:0 1.2rem}
-  .hero h1{font-size:2.5rem}
-  .hero-stats{gap:1.2rem}
+@media(max-width:700px){
+  .page-content{padding:1.5rem 1.2rem}
+  .hero h1{font-size:2.4rem}
+  nav .nav-links,.nav-badge{display:none}
 }
 </style>
 </head>
 <body>
+
+<canvas id="bg-canvas"></canvas>
 
 <nav>
   <div class="nav-inner">
     <div class="logo">OI<span>.sys</span></div>
     <div style="display:flex;align-items:center">
       <div class="nav-links">
-        <a href="#about">About</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
       </div>
-      <div class="nav-badge"><span class="dot" style="display:inline-block;width:5px;height:5px;background:var(--green);border-radius:50%;margin-right:5px;animation:pulse 2s infinite"></span>open to opportunities</div>
+      <div class="nav-badge"><span class="dot"></span>open to opportunities</div>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO - full width -->
 <section class="hero">
-  <div class="wrap">
-    <div class="hero-inner">
-      <div class="hero-eyebrow"><span class="dot"></span>Available for internships & research roles</div>
-      <h1>Olesya<br><span class="name">Ivashchuk</span><span class="cur"></span></h1>
-      <div class="hero-role"> Computer Sience Student <em> Embedded Systems Enthusiast</em></div>
-      <p class="hero-desc">
-        Computer Science student at Walsh University, independently developing expertise in embedded systems engineering. 
-        My focus is real-time firmware development, microcontroller performance analysis, 
-        and sensor data acquisition — areas I pursue through self-directed research projects beyond my formal curriculum.
+  <div class="outer">
+    <div class="hero-eyebrow"><span class="dot"></span>Available for internships & research roles</div>
+    <h1>Olesya<br><span class="name">Ivashchuk</span><span class="cur"></span></h1>
+    <div class="hero-role">Computer Science Student <em>· Embedded Systems Enthusiast</em></div>
+    <p class="hero-desc">CS student at Walsh University independently developing expertise in embedded systems — real-time firmware, microcontroller benchmarking, and sensor data acquisition.</p>
+    <div class="hero-btns">
+      <a href="mailto:oivashch1@walsh.edu" class="btn btn-p">Contact Me</a>
+      <a href="https://github.com/olesyaivashchuk24" class="btn btn-o" target="_blank">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/olesia-ivashchuk-6b88b83a6/" class="btn btn-o" target="_blank">LinkedIn ↗</a>
+      <a href="#projects" class="btn btn-g">View Projects</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="hstat-val">3.66</span><span class="hstat-lbl">GPA · CS @ Walsh</span></div>
+      <div><span class="hstat-val">3+</span><span class="hstat-lbl">Research projects</span></div>
+      <div><span class="hstat-val">3</span><span class="hstat-lbl">Languages spoken</span></div>
+      <div><span class="hstat-val g">May 2027</span><span class="hstat-lbl">Graduation</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO-COLUMN SHELL -->
+<div class="page-shell" style="margin-top:0">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="page-sidebar">
+
+    <div class="prof-top">
+      <div class="prof-avatar">OI</div>
+      <div class="prof-name">Olesya Ivashchuk</div>
+      <div class="prof-title">Embedded Systems · Walsh University CS</div>
+      <div class="status-pill"><span class="dot"></span>Active — building on Pico 2W</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-head">Education</div>
+      <div class="info-row"><span class="lbl">Degree</span><span class="val">B.S. Computer Science</span></div>
+      <div class="info-row"><span class="lbl">GPA</span><span class="val" style="color:var(--purple)">3.66</span></div>
+      <div class="info-row"><span class="lbl">Location</span><span class="val">North Canton, OH</span></div>
+      <div class="info-row"><span class="lbl">Grad</span><span class="val">May 2027</span></div>
+      <div class="info-row"><span class="lbl">Sports</span><span class="val">NCAA Div II Tennis</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-head">Hardware</div>
+      <div class="mcu-list">
+        <span class="tag">Raspberry Pi Pico 2W</span>
+        <span class="tag">ESP32-S3</span>
+        <span class="tag">Arduino</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-head">Focus Areas</div>
+      <div class="mcu-list">
+        <span class="tg tag">Real-time firmware</span>
+        <span class="tg tag">Timing analysis</span>
+        <span class="tg tag">Serial telemetry</span>
+        <span class="tg tag">I2C sensors</span>
+        <span class="tg tag">MATLAB analysis</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-head">Languages</div>
+      <div class="info-row" style="padding:.2rem 0"><span class="val">🇺🇸 English</span></div>
+      <div class="info-row" style="padding:.2rem 0"><span class="val">🇷🇺 Russian (native)</span></div>
+      <div class="info-row" style="padding:.2rem 0"><span class="val">🇺🇦 Ukrainian (native)</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-head">Connect</div>
+      <div class="sidebar-links">
+        <a href="mailto:oivashch1@walsh.edu" class="s-link"><span class="s-link-ico">✉</span>oivashch1@walsh.edu</a>
+        <a href="https://github.com/olesyaivashchuk24" class="s-link" target="_blank"><span class="s-link-ico">⌥</span>github.com/olesyaivashchuk24</a>
+        <a href="https://www.linkedin.com/in/olesia-ivashchuk-6b88b83a6/" class="s-link" target="_blank"><span class="s-link-ico">◈</span>LinkedIn profile</a>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- RIGHT CONTENT -->
+  <main class="page-content">
+
+    <!-- ABOUT -->
+    <section style="padding:0 0 60px">
+      <div class="sec-label">About</div>
+      <p style="font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:1rem;font-weight:300">
+        Walsh University doesn't offer specialized embedded systems courses — so I built my experience independently through research-oriented projects. I've worked across firmware development, microcontroller benchmarking, real-time acquisition pipelines, and timing behavior analysis from first principles.
       </p>
-      <div class="hero-btns">
-        <a href="mailto:oivashch1@walsh.edu" class="btn btn-p">Contact Me</a>
-        <a href="https://github.com/olesyaivashchuk24" class="btn btn-o" target="_blank">GitHub ↗</a>
-        <a href="https://www.linkedin.com/in/olesia-ivashchuk-6b88b83a6/" class="btn btn-o" target="_blank">LinkedIn ↗</a>
-        <a href="#projects" class="btn btn-g">View Projects</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hstat"><span class="hstat-val">3.66</span><span class="hstat-lbl">GPA · CS @ Walsh</span></div>
-        <div class="hstat"><span class="hstat-val">3+</span><span class="hstat-lbl">Research projects</span></div>
-        <div class="hstat"><span class="hstat-val">3</span><span class="hstat-lbl">Languages spoken</span></div>
-        <div class="hstat"><span class="hstat-val g">May 2027</span><span class="hstat-lbl">Graduation</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+      <p style="font-size:15px;color:var(--text2);line-height:1.85;font-weight:300">
+        Embedded engineering appeals to me because it sits at the exact boundary between software and physical reality. Every timing constraint, memory limit, and microsecond matters. I find that exciting, not intimidating.
+      </p>
+    </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="wrap">
-    <div class="sec-label">About</div>
-    <div class="bento">
-      <div class="card c8 hl">
-        <div class="ctag">Background</div>
-        <h3>Self-driven embedded engineer</h3>
-        <p style="margin-top:.5rem">
-          Walsh University doesn't offer specialized embedded systems courses — so I built my experience independently through research-oriented projects. I've worked across firmware development, microcontroller benchmarking, real-time acquisition pipelines, and timing behavior analysis from first principles.
-          <br><br>
-          Embedded engineering appeals to me because it sits at the exact boundary between software and physical reality. Every timing constraint, memory limit, and microsecond matters. I find that exciting, not intimidating.
-        </p>
+    <!-- EXPERIENCE -->
+    <section id="experience" style="padding:0 0 60px">
+      <div class="sec-label">Experience</div>
+      <div class="card">
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">NCAA Division II Tennis Player</div>
+              <div class="exp-org">Walsh University Tennis Team</div>
+            </div>
+            <div class="exp-date">2023 – Present<br>North Canton, OH</div>
+          </div>
+          <div class="exp-desc">Compete at Division II collegiate level while maintaining a 3.66 GPA. Balancing intensive training schedules with demanding CS coursework and independent embedded systems research demonstrates time management and performance under pressure.</div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">Robotics Club Instructor</div>
+              <div class="exp-org">Local School, Belgorod</div>
+            </div>
+            <div class="exp-date">Summer 2024<br>Belgorod, Russia</div>
+          </div>
+          <div class="exp-desc">Led a robotics club introducing students to programming, electronics, and problem-solving. Guided hands-on projects using Arduino and MicroPython. Fostered creativity through project-based learning.</div>
+          <div class="tags"><span class="tag">Arduino</span><span class="tag">MicroPython</span><span class="tg tag">Mentorship</span></div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">Tennis Instructor & Camp Counselor</div>
+              <div class="exp-org">Tennis Summer Camp</div>
+            </div>
+            <div class="exp-date">2021 – 2025<br>Belgorod, Russia</div>
+          </div>
+          <div class="exp-desc">Coached youth athletes in tennis fundamentals. Designed camp activities promoting teamwork. Developed leadership, communication, and organizational skills through consistent mentorship of small groups.</div>
+        </div>
+
       </div>
-      <div class="card c4 hl">
-        <div class="ctag">Education</div>
-        <h3>Walsh University</h3>
-        <p style="margin-top:.4rem;line-height:1.9">
-          B.S. Computer Science<br>
-          <span style="color:var(--purple)">GPA: 3.6</span><br>
-          North Canton, OH<br>
-          Expected May 2027
-        </p>
-        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
-          <div class="ctag g">Athletics</div>
-          <p>NCAA Div II Tennis Team<br>Member since Aug 2023</p>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" style="padding:0 0 60px">
+      <div class="sec-label">Featured Projects</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+
+        <div class="proj">
+          <div class="proj-head">
+            <h3>Real-Time Environmental Monitoring System</h3>
+            <a href="https://github.com/olesyaivashchuk24/embedded-monitoring-system" class="proj-link" target="_blank">GitHub ↗</a>
+          </div>
+          <p class="proj-desc">Real-time sensing platform on Raspberry Pi Pico 2W. Built USB serial telemetry pipeline with microsecond timestamps, measured loop jitter (~64μs at 100ms target), and designed CSV packet format for MATLAB ingestion. Currently integrating BME280 temperature/pressure and MPU6050 motion sensors.</p>
+          <div class="tags">
+            <span class="tag">C</span><span class="tag">Pico SDK</span><span class="tag">CMake</span><span class="tag">I2C</span><span class="tag">USB Serial</span><span class="tg tag">MATLAB</span><span class="tg tag">Jitter Analysis</span>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-head">
+            <h3>Embedded Framework Benchmarking</h3>
+            <a href="https://github.com/olesyaivashchuk24" class="proj-link" target="_blank">GitHub ↗</a>
+          </div>
+          <p class="proj-desc">Comparative research on C, MicroPython, and TinyGo performance on ESP32-S3. Designed benchmark suites evaluating GPIO latency, sensor interfacing, mathematical computations, networking, and power consumption. Produced comparative charts and a detailed performance analysis report.</p>
+          <div class="tags">
+            <span class="tag">C (ESP-IDF)</span><span class="tag">MicroPython</span><span class="tag">TinyGo</span><span class="tag">ESP32-S3</span><span class="tg tag">Benchmarking</span><span class="tg tag">Power Analysis</span>
+          </div>
+        </div>
+
+        <div class="proj">
+          <div class="proj-head">
+            <h3>Robotics Club Projects</h3>
+          </div>
+          <p class="proj-desc">Developed and instructed student-led robotics projects at Walsh University and a local school. Taught programming fundamentals and hardware–software integration. Led hands-on embedded projects using Arduino and microcontroller sensors.</p>
+          <div class="tags">
+            <span class="tag">Arduino</span><span class="tag">MicroPython</span><span class="tag">C++</span><span class="tag">Python</span><span class="tg tag">Teaching</span><span class="tg tag">Mentorship</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" style="padding:0 0 60px">
+      <div class="sec-label">Tech Stack</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div class="sg">
+          <div class="sg-lbl">Languages</div>
+          <div class="sg-list">
+            <span class="tag">C</span><span class="tag">C++</span><span class="tag">Python</span><span class="tag">MicroPython</span><span class="tag">TinyGo</span><span class="tag">PHP</span><span class="tag">JavaScript</span>
+          </div>
+        </div>
+        <div class="sg">
+          <div class="sg-lbl">Embedded & Protocols</div>
+          <div class="sg-list">
+            <span class="tag">Pico SDK</span><span class="tag">ESP-IDF</span><span class="tag">CMake</span><span class="tag">I2C</span><span class="tag">SPI</span><span class="tag">UART</span><span class="tag">USB Serial</span><span class="tag">Arduino IDE</span>
+          </div>
+        </div>
+        <div class="sg">
+          <div class="sg-lbl">Tools & Analysis</div>
+          <div class="sg-list">
+            <span class="tg tag">MATLAB</span><span class="tg tag">Git</span><span class="tg tag">GitHub</span><span class="tg tag">VS Code</span><span class="tg tag">Blender</span><span class="tg tag">MySQL</span><span class="tg tag">VirtualBox</span>
+          </div>
         </div>
       </div>
-      <div class="card c3 gl">
-        <div class="ctag g">Status</div>
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:.4rem">
-          <span class="dot"></span>
-          <span style="font-size:14px;font-weight:600">Active</span>
-        </div>
-        <p>Building sensor pipeline on Pico 2W right now</p>
-      </div>
-      <div class="card c3 hl">
-        <div class="ctag">Hardware</div>
-        <h3 style="font-size:13px">MCUs I work with</h3>
-        <p style="margin-top:.4rem;line-height:2">Raspberry Pi Pico 2W<br>ESP32-S3<br>Arduino</p>
-      </div>
-      <div class="card c3 hl">
-        <div class="ctag">Focus</div>
-        <h3 style="font-size:13px">Real-time systems</h3>
-        <p style="margin-top:.4rem;line-height:2">Timing analysis<br>Serial telemetry<br>I2C sensors · MATLAB</p>
-      </div>
-      <div class="card c3 hl">
-        <div class="ctag">Languages</div>
-        <h3 style="font-size:13px">English · Russian · Ukrainian</h3>
-        <p style="margin-top:.4rem">Fluent in English, native in Russian and Ukrainian</p>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="wrap">
-    <div class="sec-label">Experience</div>
-    <div class="card c12" style="grid-column:span 12">
+    <!-- NOW BUILDING -->
+    <section style="padding:0 0 60px">
+      <div class="sec-label">Now Building</div>
+      <div class="card" style="border-color:var(--purple-border)">
+        <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>BME280 sensor integration</strong> — temperature, pressure, humidity over I2C on Pico 2W</span></div>
+        <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>MATLAB analysis pipeline</strong> — real-time visualization, FFT, jitter statistics, latency evaluation</span></div>
+        <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>MPU6050 motion data</strong> — accelerometer and gyroscope acquisition with noise characterization</span></div>
+        <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>Communication latency measurement</strong> — end-to-end timing from sensor read to MATLAB display</span></div>
+      </div>
+    </section>
 
-      <div class="exp-item">
-        <div class="exp-date">2023 – Present<br>North Canton, OH</div>
-        <div class="exp-dot"></div>
-        <div>
-          <div class="exp-role">NCAA Division II Tennis Player</div>
-          <div class="exp-org">Walsh University Tennis Team</div>
-          <div class="exp-desc">Compete at the Division II collegiate level while maintaining a 3.6 GPA. Demonstrate discipline, time management, and the ability to perform under pressure — balancing intensive training schedules with demanding academic coursework in CS and embedded systems research.</div>
+    <!-- CONTACT -->
+    <section id="contact" style="padding:0 0 60px">
+      <div class="sec-label">Contact</div>
+      <div class="clinks">
+        <a href="mailto:oivashch1@walsh.edu" class="clink">
+          <div class="clink-ico">✉</div>
+          <div><div class="clbl">Email</div><div class="cval">oivashch1@walsh.edu</div></div>
+        </a>
+        <a href="https://github.com/olesyaivashchuk24" class="clink" target="_blank">
+          <div class="clink-ico">⌥</div>
+          <div><div class="clbl">GitHub</div><div class="cval">olesyaivashchuk24</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/olesia-ivashchuk-6b88b83a6/" class="clink" target="_blank">
+          <div class="clink-ico">◈</div>
+          <div><div class="clbl">LinkedIn</div><div class="cval">Olesya Ivashchuk</div></div>
+        </a>
+        <div class="clink">
+          <div class="clink-ico">◎</div>
+          <div><div class="clbl">Location</div><div class="cval">North Canton, Ohio</div></div>
         </div>
       </div>
+    </section>
 
-      <div class="exp-item">
-        <div class="exp-date">Summer 2024<br>Belgorod, Russia</div>
-        <div class="exp-dot"></div>
-        <div>
-          <div class="exp-role">Robotics Club Instructor</div>
-          <div class="exp-org">Local School, Belgorod</div>
-          <div class="exp-desc">Led a robotics club introducing students to programming, electronics, and problem-solving. Guided hands-on projects using Arduino and MicroPython. Fostered creativity and collaboration through project-based learning with young students.</div>
-          <div class="tags" style="margin-top:.8rem"><span class="tag">Arduino</span><span class="tag">MicroPython</span><span class="tg tag">Mentorship</span></div>
-        </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-date">2021 – 2025<br>Belgorod, Russia</div>
-        <div class="exp-dot"></div>
-        <div>
-          <div class="exp-role">Tennis Instructor & Camp Counselor</div>
-          <div class="exp-org">Tennis Summer Camp</div>
-          <div class="exp-desc">Coached youth athletes in tennis fundamentals and skill development. Designed engaging camp activities to promote participation and teamwork. Developed strong leadership, communication, and organizational skills through consistent instruction and mentorship of small groups.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="wrap">
-    <div class="sec-label">Featured Projects</div>
-    <div class="bento">
-
-      <div class="proj">
-        <div class="proj-head">
-          <h3>Real-Time Environmental Monitoring System</h3>
-          <a href="https://github.com/olesyaivashchuk24/embedded-monitoring-system" class="proj-link" target="_blank">GitHub ↗</a>
-        </div>
-        <p class="proj-desc">Real-time sensing platform on Raspberry Pi Pico 2W. Built USB serial telemetry pipeline with microsecond timestamps, measured loop jitter (~64μs at 100ms target), and designed CSV packet format for MATLAB ingestion. Currently integrating BME280 temperature/pressure and MPU6050 motion sensors.</p>
-        <div class="tags">
-          <span class="tag">C</span><span class="tag">Pico SDK</span><span class="tag">CMake</span><span class="tag">I2C</span><span class="tag">USB Serial</span><span class="tg tag">MATLAB</span><span class="tg tag">Jitter Analysis</span>
-        </div>
-      </div>
-
-      <div class="proj">
-        <div class="proj-head">
-          <h3>Embedded Framework Benchmarking</h3>
-          <a href="https://github.com/olesyaivashchuk24" class="proj-link" target="_blank">GitHub ↗</a>
-        </div>
-        <p class="proj-desc">Comparative research on C, MicroPython, and TinyGo performance on ESP32-S3. Designed benchmark suites evaluating GPIO latency, sensor interfacing, mathematical computations, networking, and power consumption. Produced comparative charts and a detailed performance analysis report.</p>
-        <div class="tags">
-          <span class="tag">C (ESP-IDF)</span><span class="tag">MicroPython</span><span class="tag">TinyGo</span><span class="tag">ESP32-S3</span><span class="tg tag">Benchmarking</span><span class="tg tag">Power Analysis</span>
-        </div>
-      </div>
-
-      <div class="proj" style="grid-column:span 12">
-        <div class="proj-head">
-          <h3>Robotics Club Projects</h3>
-        </div>
-        <p class="proj-desc">Developed and instructed student-led robotics projects at Walsh University and a local school in Russia. Taught programming fundamentals (Python, C++, MicroPython) and hardware–software integration. Led hands-on embedded projects using Arduino and microcontroller sensors.</p>
-        <div class="tags">
-          <span class="tag">Arduino</span><span class="tag">MicroPython</span><span class="tag">C++</span><span class="tag">Python</span><span class="tg tag">Teaching</span><span class="tg tag">Mentorship</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="wrap">
-    <div class="sec-label">Tech Stack</div>
-    <div class="bento">
-      <div class="sg">
-        <div class="sg-lbl">Languages</div>
-        <div class="sg-list">
-          <span class="tag">C</span><span class="tag">C++</span><span class="tag">Python</span><span class="tag">MicroPython</span><span class="tag">TinyGo</span><span class="tag">PHP</span><span class="tag">JavaScript</span>
-        </div>
-      </div>
-      <div class="sg">
-        <div class="sg-lbl">Embedded & Protocols</div>
-        <div class="sg-list">
-          <span class="tag">Pico SDK</span><span class="tag">ESP-IDF</span><span class="tag">CMake</span><span class="tag">I2C</span><span class="tag">SPI</span><span class="tag">UART</span><span class="tag">USB Serial</span><span class="tag">Arduino IDE</span>
-        </div>
-      </div>
-      <div class="sg">
-        <div class="sg-lbl">Tools & Analysis</div>
-        <div class="sg-list">
-          <span class="tg tag">MATLAB</span><span class="tg tag">Git</span><span class="tg tag">GitHub</span><span class="tg tag">VS Code</span><span class="tg tag">Blender</span><span class="tg tag">MySQL</span><span class="tg tag">VirtualBox</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NOW BUILDING -->
-<section>
-  <div class="wrap">
-    <div class="sec-label">Now Building</div>
-    <div class="card" style="border-color:var(--purple-border)">
-      <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>BME280 sensor integration</strong> — temperature, pressure, humidity over I2C on Pico 2W</span></div>
-      <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>MATLAB analysis pipeline</strong> — real-time visualization, FFT, jitter statistics, latency evaluation</span></div>
-      <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>MPU6050 motion data</strong> — accelerometer and gyroscope acquisition with noise characterization</span></div>
-      <div class="now-row"><span class="now-arr">→</span><span class="now-txt"><strong>Communication latency measurement</strong> — end-to-end timing from sensor read to MATLAB display</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="wrap">
-    <div class="sec-label">Contact</div>
-    <div class="bento">
-      <a href="mailto:oivashch1@walsh.edu" class="clink">
-        <div class="clink-ico">✉</div>
-        <div><div class="clbl">Email</div><div class="cval">oivashch1@walsh.edu</div></div>
-      </a>
-      <a href="https://github.com/olesyaivashchuk24" class="clink" target="_blank">
-        <div class="clink-ico">⌥</div>
-        <div><div class="clbl">GitHub</div><div class="cval">github.com/olesyaivashchuk24</div></div>
-      </a>
-      <a href="https://linkedin.com/in/yourprofile" class="clink" target="_blank">
-        <div class="clink-ico">◈</div>
-        <div><div class="clbl">LinkedIn</div><div class="cval">Olesya Ivashchuk</div></div>
-      </a>
-      <div class="clink">
-        <div class="clink-ico">◎</div>
-        <div><div class="clbl">Location</div><div class="cval">North Canton, Ohio</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+  </main>
+</div>
 
 <footer>
-  <div class="wrap">© 2026 Olesya Ivashchuk · OI.sys · Embedded Systems Engineer</div>
+  <div class="outer">© 2026 Olesya Ivashchuk · OI.sys · Embedded Systems Engineer</div>
 </footer>
+
+<script>
+// Animated circuit board background
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, nodes, lines, particles;
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  init();
+}
+
+function init(){
+  const cols = Math.floor(W / 80);
+  const rows = Math.floor(H / 80);
+  nodes = [];
+  for(let i=0;i<cols*rows*0.3;i++){
+    nodes.push({
+      x: Math.random()*W,
+      y: Math.random()*H,
+      r: Math.random()*1.5+0.5,
+      pulse: Math.random()*Math.PI*2
+    });
+  }
+  lines = [];
+  nodes.forEach((n,i)=>{
+    let dists = nodes.map((m,j)=>({j,d:Math.hypot(m.x-n.x,m.y-n.y)}))
+      .filter(e=>e.j!==i&&e.d<150).sort((a,b)=>a.d-b.d).slice(0,2);
+    dists.forEach(e=>{
+      if(!lines.find(l=>(l.a===e.j&&l.b===i)||(l.a===i&&l.b===e.j)))
+        lines.push({a:i,b:e.j,prog:Math.random()});
+    });
+  });
+  particles = Array.from({length:8},()=>({
+    lineIdx: Math.floor(Math.random()*lines.length),
+    t:Math.random(),
+    speed:0.002+Math.random()*0.003
+  }));
+}
+
+function draw(ts){
+  ctx.clearRect(0,0,W,H);
+
+  // grid
+  ctx.strokeStyle='rgba(168,85,247,0.03)';
+  ctx.lineWidth=1;
+  for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+  // lines
+  lines.forEach(l=>{
+    const a=nodes[l.a],b=nodes[l.b];
+    ctx.strokeStyle='rgba(192,132,252,0.06)';
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  });
+
+  // nodes
+  const t=ts*0.001;
+  nodes.forEach(n=>{
+    const alpha=0.15+0.07*Math.sin(t+n.pulse);
+    ctx.fillStyle=`rgba(192,132,252,${alpha})`;
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill();
+  });
+
+  // traveling particles
+  particles.forEach(p=>{
+    p.t+=p.speed;
+    if(p.t>1){p.t=0;p.lineIdx=Math.floor(Math.random()*lines.length)}
+    const l=lines[p.lineIdx];
+    const a=nodes[l.a],b=nodes[l.b];
+    const x=a.x+(b.x-a.x)*p.t;
+    const y=a.y+(b.y-a.y)*p.t;
+    ctx.fillStyle='rgba(52,211,153,0.7)';
+    ctx.beginPath();ctx.arc(x,y,1.5,0,Math.PI*2);ctx.fill();
+  });
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize',resize);
+resize();
+requestAnimationFrame(draw);
+</script>
 
 </body>
 </html>
